@@ -4,7 +4,7 @@ class LogParser:
 	def parse(self, fullpath=''):
 		self.__log_file_path = fullpath
 		
-		#Chegando que o path informado é um arquivo.
+		#Checando que o path informado é um arquivo.
 		#Casocontrário, o método __check_file_exists lança uma exceção
 		self.__check_file_exists()
 
@@ -34,11 +34,11 @@ class LogParser:
 
 	def __kill_chunk_rules(self, game, pre):
 		#Sempre adicionar um novo kill ao game
-		#Verificar se assassino e assassinado estão na lista de players do game.
+		#Verificar se o assassino e assassinado estão na lista de players do game.
 		#Quantificar assassinatos; 
 		#    |
 		#    Se o 'killer' for <world> será necessário retirar um flag do 'killed'
-		#Motivo da morte
+		#Motivo da morte no índice 'kills_by_means'
 
 		#Incrementa o montante total de mortes na partida. 
 		game['total_kills'] += 1
@@ -78,8 +78,9 @@ class LogParser:
 
 
 	def __kill_chunk_slice(self, chunk): 
-		# exemplo do padaço kill: 
+		#Exemplo do padaço kill: 
 		#21:42 Kill: 1022 2 22: <world> killed Isgalamido by MOD_TRIGGER_HURT
+
 		index = chunk.rindex(':') + 1
 		temp  = chunk[index:]
 		temp  = temp.replace('killed', '|').replace('by', '|').split('|')
@@ -104,7 +105,7 @@ class LogParser:
 
 	#Verifica se a fatia do logo é importante para o contexto do parser
 	def __chunk_is_important(self, chunk):
-		#pedaços que são importantes contêm
+		#Pedaços que são importantes contêm: 
 		#Kill: 			(representa um assassinato no jogo)
 		#InitGame:      (representa o início do jogo/partida)
 		#ShutdownGame:	(representa que o jogo foi finalizado)
