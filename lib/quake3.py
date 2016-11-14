@@ -1,5 +1,4 @@
 import os
-
 class LogParser:
 
 	def parse(self, fullpath=''):
@@ -36,10 +35,10 @@ class LogParser:
 	def __kill_chunk_rules(self, game, pre):
 		#Sempre adicionar um novo kill ao game
 		#Verificar se assassino e assassinado estão na lista de players do game.
-		#Quantificar assassinato; 
+		#Quantificar assassinatos; 
 		#    |
 		#    Se o 'killer' for <world> será necessário retirar um flag do 'killed'
-		#Motivo da mote
+		#Motivo da morte
 
 		#Incrementa o montante total de mortes na partida. 
 		game['total_kills'] += 1
@@ -52,24 +51,24 @@ class LogParser:
 		
 
 		#As duas condicionais abaixo adicionam players desconhecidos na lista de jogadores.
-		if not pre['killer'] in game['players'] and pre['killer'] != '<world>':
+		if not pre['killer'] in game['players'] and not pre['killer'] in '<world>':
 			game['players'].append(pre['killer']) 
 
-		if not pre['killed'] in game['players'] and pre['killed'] != '<world>':
+		if not pre['killed'] in game['players'] and not pre['killed'] in '<world>':
 			game['players'].append(pre['killed']) 
 
 		#No caso do usuário matar a si mesmo
-		if pre['killed'] == pre['killer']: 
-			return
+		# if pre['killed'] == pre['killer']: 
+		# 	return
 
 		#No caso do assassino não existir na lista de matadores
-		if not pre['killer'] in game['kills'] and pre['killer'] != '<world>':
+		if not pre['killer'] in game['kills'] and not pre['killer'] in '<world>':
 			game['kills'][pre['killer']]  = 1 
-		elif pre['killer'] != '<world>':
+		elif not pre['killer'] in '<world>':
 			game['kills'][pre['killer']] += 1 
 
 		#No caso do assassinado não existir na lista de matadores. 
-		if not pre['killed'] in game['kills']:
+		if not pre['killed'] in game['kills'] and not pre['killed'] in '<world>':
 			game['kills'][pre['killed']]  = 0 
 
 		#No caso do usuário se matar com alguma armadilha do cenário. 
@@ -86,9 +85,9 @@ class LogParser:
 		temp  = temp.replace('killed', '|').replace('by', '|').split('|')
 
 		result = {
-			'killer' : temp[0].rstrip(), 
-			'killed' : temp[1].rstrip(), 
-			'weapon' : temp[2].rstrip()
+			'killer' : temp[0].strip(), 
+			'killed' : temp[1].strip(), 
+			'weapon' : temp[2].strip()
 		}
 
 		return result
