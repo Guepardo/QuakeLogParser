@@ -6,4 +6,4 @@ game_log_path = os.path.join(os.getcwd(), 'resources', 'game.log')
 
 log_parser = LogParser()
 
-print(log_parser.parse(fullpath= game_log_path))
+print(log_parser.parse(fullpath= game_log_path)['game-1'])
