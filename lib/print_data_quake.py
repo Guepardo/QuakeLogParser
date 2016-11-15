@@ -11,11 +11,11 @@ def print_data_prompt(data):
 
 		print('+--------Kills---------+')
 
-
 		for killer in temp['kills']:
 			pre = '|'+killer+''.ljust( abs( len(killer) - 20))
 
 			print(pre +'%02d' %temp['kills'][killer]+'|')
+			
 		print('+----------------------+')
 		print('|Total Kills:       %03d|' % temp['total_kills'])
 		print('+----------------------+')

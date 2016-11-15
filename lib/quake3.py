@@ -4,7 +4,7 @@ class LogParser:
 	def parse(self, fullpath=''):
 		self.__log_file_path = fullpath
 		
-		#Checando que o path informado é um arquivo.
+		#Checando se o path informado é um arquivo.
 		#Casocontrário, o método __check_file_exists lança uma exceção
 		self.__check_file_exists()
 
@@ -14,21 +14,20 @@ class LogParser:
 		log_parsed      = {}
 
 		for chunk in self.__chunk_lines(): 
-		
+
 			if chunk['type'] == 'Kill:': 
 				processed = self.__kill_chunk_slice(chunk['content'])
 				self.__kill_chunk_rules(log_parsed[key_game], processed)
 				continue
 
 			if chunk['type'] == 'InitGame:': 
-				key_game             = 'game-'+ str(temp_game_round)
+				key_game = 'game-'+ str(temp_game_round)
 				log_parsed[key_game] = self.__new_game_dictionary()
 				continue
 
 			if chunk['type'] == 'ShutdownGame:': 
 				temp_game_round += 1
 
-				
 		return log_parsed
 
 
@@ -43,12 +42,11 @@ class LogParser:
 		#Incrementa o montante total de mortes na partida. 
 		game['total_kills'] += 1
 
-		#Agraga os motivos de mortes numa partida. 
+		#Agrega os motivos de mortes numa partida. 
 		if not pre['weapon'] in game['kills_by_means']: 
 			game['kills_by_means'][pre['weapon']] = 1
 		else: 
 			game['kills_by_means'][pre['weapon']] += 1
-		
 
 		#As duas condicionais abaixo adicionam players desconhecidos na lista de jogadores.
 		if not pre['killer'] in game['players'] and not pre['killer'] in '<world>':
@@ -103,12 +101,12 @@ class LogParser:
 				continue
 			yield chunk
 
-	#Verifica se a fatia do logo é importante para o contexto do parser
+	#Verifica se a fatia do log é importante para o contexto do parser
 	def __chunk_is_important(self, chunk):
 		#Pedaços que são importantes contêm: 
 		#Kill: 			(representa um assassinato no jogo)
 		#InitGame:      (representa o início do jogo/partida)
-		#ShutdownGame:	(representa que o jogo foi finalizado)
+		#ShutdownGame:	(representa o fim do jogo/partida)
 
 		important_labels = ['Kill:', 'InitGame:', 'ShutdownGame:']
 
